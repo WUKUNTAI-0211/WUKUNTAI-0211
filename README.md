@@ -20,10 +20,6 @@ Coming from a **computer vision research** background.
 
 `Go` `Python` `Rust` `TypeScript` · LLM inference · vLLM · MCP · Kubernetes · CUDA
 
-### 📈 GitHub
-
-![WUKUNTAI's GitHub stats](https://github-readme-stats.vercel.app/api?username=WUKUNTAI-0211&show_icons=true&theme=default&hide_border=true)
-
 ---
 
 📍 Based in Taiwan · Open to OSS collaboration
