@@ -12,7 +12,6 @@ Coming from a **computer vision research** background.
 ### 🎓 Research background
 
 - 🌧 **DualPromptIR** — Image restoration with dual-modal prompts and histogram specification for multi-weather degradation *(main author, under review)*
-- 🌫 **[Nightcrawler](https://github.com/WUKUNTAI-0211/Nightcrawler)** — Top-2 solution, CVPR UG2+ Track 2
 - 🏆 **[AICUP 2024 Rank 5](https://github.com/WUKUNTAI-0211/AICUP_2024_rank5)**
 - 🎖 Academia Sinica Fellowship recipient
 
