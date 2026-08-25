@@ -17,7 +17,7 @@ Previously worked in **computer vision research**.
 
 ### 🧰 Tech I work with
 
-`Go` `Python` `Rust` `TypeScript` · LLM inference · vLLM · MCP · Kubernetes · CUDA
+`Go` `Python` `Rust` `TypeScript` · LLM inference · vLLM · MCP 
 
 ---
 
