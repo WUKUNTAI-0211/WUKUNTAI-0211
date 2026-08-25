@@ -1,11 +1,11 @@
 ## Hi, I'm Kuntai 👋
 
-Software engineer working on **LLM inference & routing infrastructure**.
-Coming from a **computer vision research** background.
+Software engineer building **LLM inference & routing infrastructure**.
+Previously worked in **computer vision research**.
 
 ### 🛠 What I'm working on
 
-- 🚦 **Committer** at [@vllm-project/semantic-router](https://github.com/vllm-project/semantic-router) — building signal-driven LLM routing for mixture-of-models systems
+- 🚦 **Maintainer** at [@vllm-project/semantic-router](https://github.com/vllm-project/semantic-router) — building signal-driven LLM routing for mixture-of-models systems
 - 🧠 LLM serving, agentic systems, inference optimization
 - 🤖 MCP servers & tooling for AI-native developer workflows
 
