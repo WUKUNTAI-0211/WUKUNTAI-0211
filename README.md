@@ -1,24 +1,11 @@
-## Hi, I'm Kuntai 👋
+<img src="./neon-routing-v2.gif" alt="Kun-Tai Wu · LLM Inference &amp; Routing · vLLM Semantic Router Maintainer" width="1120">
 
-Software engineer building **LLM inference & routing infrastructure**.
-Previously worked in **computer vision research**.
+I maintain **vLLM Semantic Router** and build AI developer tools at **Delta Electronics**.
 
-### 🛠 What I'm working on
+### Selected work
 
-- 🚦 **Maintainer** at [@vllm-project/semantic-router](https://github.com/vllm-project/semantic-router) — building signal-driven LLM routing for mixture-of-models systems
-- 🧠 LLM serving, agentic systems, inference optimization
-- 🤖 MCP servers & tooling for AI-native developer workflows
+[Semantic Router](https://github.com/vllm-project/semantic-router) · [CUDA on ARM64](https://github.com/vllm-project/semantic-router/pull/5615) · [CUDA Runtime](https://github.com/vllm-project/semantic-router/pull/5694) · [vLLM Load Balancing](https://github.com/vllm-project/semantic-router/issues/6871)
 
-### 🎓 Research background
+My research background is in image restoration at National Chengchi University. I received an Academia Sinica Fellowship.
 
-- 🌧 **DualPromptIR** — Image restoration with dual-modal prompts and histogram specification for multi-weather degradation *(main author, under review)*
-- 🏆 **[AICUP 2024 Rank 5](https://github.com/WUKUNTAI-0211/AICUP_2024_rank5)**
-- 🎖 Academia Sinica Fellowship recipient
-
-### 🧰 Tech I work with
-
-`Go` `Python` `Rust` `TypeScript` · LLM inference · vLLM · MCP 
-
----
-
-📍 Based in Taiwan · Open to OSS collaboration
+[CV](https://github.com/WUKUNTAI-0211/CV/blob/HEAD/kuntai_CV.md)
