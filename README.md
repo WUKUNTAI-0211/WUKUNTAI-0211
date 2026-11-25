@@ -58,7 +58,7 @@ I work on **semantic model routing**: deciding which model should serve each req
     <sub>In review: <a href="https://github.com/vllm-project/semantic-router/pull/6688">#6688</a> · issue <a href="https://github.com/vllm-project/semantic-router/issues/6687">#6687</a></sub>
   </td>
   <td valign="top">
-    Built the company's first internal coding agent (ReAct on LangGraph, RAG memory, permission-gated tools), now used by 500+ engineers. Training a cost-aware routing model on real agent trajectories.
+    Built the company's first internal coding agent (ReAct on LangGraph, RAG memory, permission-gated tools). Training a cost-aware routing model on real agent trajectories.
     <br/><br/>
     <sub>LiteLLM + Langfuse collection, labeled with LLM-as-judge</sub>
   </td>
