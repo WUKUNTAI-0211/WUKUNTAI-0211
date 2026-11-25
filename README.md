@@ -1,6 +1,6 @@
-<img src="./routing-banner.gif" alt="Kun-Tai Wu · ML Systems &amp; Inference · vLLM Semantic Router Maintainer. A request travels through Semantic Router to a vLLM replica." width="1120">
+<img src="./router-banner.gif" alt="Kun-Tai Wu · LLM Routing · vLLM Semantic Router Maintainer. A request travels through Semantic Router to a vLLM replica." width="1120">
 
-I maintain **vLLM Semantic Router**, where I work on GPU inference, ARM64 support, and model correctness. At **Delta Electronics**, I lead development of **DeltaLLM v1.0**, an enterprise coding agent platform.
+I maintain **vLLM Semantic Router**, where I work on request routing, replica load balancing, and the runtime behind routing decisions. At **Delta Electronics**, I lead development of **DeltaLLM v1.0**, an enterprise coding agent platform.
 
 [vLLM Semantic Router](https://github.com/vllm-project/semantic-router) · [LinkedIn](https://www.linkedin.com/in/kun-tai-wu/)
 
