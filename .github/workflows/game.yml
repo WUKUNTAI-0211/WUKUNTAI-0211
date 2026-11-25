@@ -1,0 +1,28 @@
+name: space-shooter
+
+# Redraws the contribution-graph space shooter at assets/space-shooter.gif.
+# The action amends its own previous commit, so history does not grow daily.
+on:
+  schedule:
+    - cron: "0 18 * * *" # daily, 02:00 Taiwan time
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-game:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - uses: czl9707/gh-space-shooter@v2.0.5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          output-path: assets/space-shooter.gif
+          strategy: random
+          fps: 25
+          commit-message: "chore: redraw contribution space shooter"

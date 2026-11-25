@@ -1,34 +1,108 @@
-<img src="./router-banner.gif" alt="Kun-Tai Wu · LLM Routing · vLLM Semantic Router Maintainer. A request travels through Semantic Router to a vLLM replica." width="1120">
+<!-- ============================================================
+     WUKUNTAI-0211 / WUKUNTAI-0211 — profile README
+     Banner: assets/banner-{light,dark}.svg, drawn by scripts/banner.py (SMIL animation).
+     Section headers are static shields. Palette: #0b0d1a (ink) · #7c5cf0 (violet) · #5eead4 (teal).
+     The space-shooter game at the bottom is redrawn daily by .github/workflows/game.yml.
+     ============================================================ -->
 
-I maintain **vLLM Semantic Router**, where I work on request routing, replica load balancing, and the runtime behind routing decisions. At **Delta Electronics**, I lead development of **DeltaLLM v1.0**, an enterprise coding agent platform.
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg"/>
+    <img src="assets/banner-light.svg" alt="Kun-Tai Wu, LLM inference routing. Animated: requests enter vLLM Semantic Router, are classified by intent, and are sent to the matching vLLM replica." width="100%"/>
+  </picture>
+</div>
 
-[vLLM Semantic Router](https://github.com/vllm-project/semantic-router) · [LinkedIn](https://www.linkedin.com/in/kun-tai-wu/)
+<p align="center">
+  <a href="https://github.com/vllm-project/semantic-router/pulls?q=is%3Apr+author%3AWUKUNTAI-0211+is%3Amerged"><img src="https://img.shields.io/badge/merged_PRs-55-7c5cf0?style=for-the-badge&logo=github&logoColor=white&labelColor=0b0d1a" alt="55 merged PRs in vLLM Semantic Router"/></a>
+  <a href="https://github.com/vllm-project/semantic-router/pulls?q=is%3Apr+reviewed-by%3AWUKUNTAI-0211+-author%3AWUKUNTAI-0211"><img src="https://img.shields.io/badge/PRs_reviewed-86-7c5cf0?style=for-the-badge&logo=github&logoColor=white&labelColor=0b0d1a" alt="86 PRs reviewed"/></a>
+  <a href="https://www.linkedin.com/in/kun-tai-wu/"><img src="https://img.shields.io/badge/LinkedIn-kun--tai--wu-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=0b0d1a" alt="LinkedIn"/></a>
+</p>
 
-### vLLM Semantic Router
+&nbsp;
 
-**Routing & model selection**
-- Built a per-decision selector that weighs model quality, latency, cost, and in-flight load against SLO limits. Added a way for agent harnesses to request a fresh routing decision within the same session. [#1953](https://github.com/vllm-project/semantic-router/pull/1953) · [#5617](https://github.com/vllm-project/semantic-router/pull/5617)
-- Reduced keyword-matching latency from **501 to 17 ms/op** in a benchmark with a 6.7 KB Chinese prompt and 30 rules. [#1871](https://github.com/vllm-project/semantic-router/pull/1871)
+<img src="https://img.shields.io/badge/%E2%96%B8%20ABOUT-0b0d1a?style=for-the-badge&labelColor=7c5cf0" alt="About"/>
 
-**Model runtime & GPU deployment**
-- Reduced host memory retained after loading FP8 d3-mini on NVIDIA GB10 from **3.98 to 0.40 GiB**. Added idle GPU allocator cache release after large requests on integrated GPUs. [#5258](https://github.com/vllm-project/semantic-router/pull/5258) · [#5892](https://github.com/vllm-project/semantic-router/pull/5892)
-- Added a `linux/arm64` CUDA router image and enabled CUDA gated-delta fusion in builds without `causal-conv1d`. [#5615](https://github.com/vllm-project/semantic-router/pull/5615) · [#5694](https://github.com/vllm-project/semantic-router/pull/5694)
+I work on **LLM inference routing**: deciding which model and which replica should serve each request, and making that decision fast and reliable on real GPUs. I'm a **maintainer of [vLLM Semantic Router](https://github.com/vllm-project/semantic-router)** (since Aug 2026) and an Associate Researcher at **Delta Electronics** in Taiwan. Before LLM systems, I worked on image restoration.
 
-**Multimodal & model correctness**
-- Added opt-in letterboxing for wide, short images. High-confidence localization errors on the d3-ultra crop evaluation fell from **50 to 10**. [#7274](https://github.com/vllm-project/semantic-router/pull/7274)
-- Added image inputs to classification, evaluation, and embedding endpoints. Restored unit normalization after truncating multimodal embeddings. [#2104](https://github.com/vllm-project/semantic-router/pull/2104) · [#2188](https://github.com/vllm-project/semantic-router/pull/2188)
+&nbsp;
 
-**Request path & caching**
-- Restored Redis semantic-cache hits for streaming responses and propagated request cancellation through cache backends. [#2034](https://github.com/vllm-project/semantic-router/pull/2034) · [#2919](https://github.com/vllm-project/semantic-router/pull/2919)
+<img src="https://img.shields.io/badge/%E2%96%B8%20BEFORE%20%E2%86%92%20AFTER-0b0d1a?style=for-the-badge&labelColor=7c5cf0" alt="Before and after"/>
 
-### Current research
+| | Before | After | |
+|---|---:|---:|---|
+| Keyword matching, 6.7 KB Chinese prompt, 30 rules | 501 ms/op | **17 ms/op** | [#1871](https://github.com/vllm-project/semantic-router/pull/1871) |
+| Recording a routing decision at 49,000 active sessions | 1.05 ms | **0.9 µs** | [#5610](https://github.com/vllm-project/semantic-router/pull/5610) |
+| Host memory after loading FP8 d3-mini on NVIDIA GB10 | 3.98 GiB | **0.40 GiB** | [#5258](https://github.com/vllm-project/semantic-router/pull/5258) |
+| High-confidence localization errors, d3-ultra crop eval | 50 | **10** | [#7274](https://github.com/vllm-project/semantic-router/pull/7274) |
+| Redis semantic-cache hits on streaming responses | 0 / 10 | **restored** | [#2034](https://github.com/vllm-project/semantic-router/pull/2034) |
 
-Comparing `load_aware` and `least_request` routing on live vLLM replicas. [#6871](https://github.com/vllm-project/semantic-router/issues/6871)
+&nbsp;
 
-### Other open-source contributions
+<img src="https://img.shields.io/badge/%E2%96%B8%20NOW-0b0d1a?style=for-the-badge&labelColor=7c5cf0" alt="Now"/>
 
-**llm-d Router**
-- Fixed multimodal prefix-cache misses for salted vLLM requests when engine blocks are merged into larger router blocks. [#4138](https://github.com/llm-d/llm-d-router/pull/4138)
-- Fixed speculative prefix-cache eviction so a shared entry survives until its last active request expires. [#3701](https://github.com/llm-d/llm-d-router/pull/3701)
+<table width="100%">
+<thead><tr>
+  <th width="50%" align="left"><a href="https://github.com/vllm-project/semantic-router">vLLM Semantic Router</a></th>
+  <th width="50%" align="left">Delta Electronics</th>
+</tr></thead>
+<tbody><tr>
+  <td valign="top">
+    Load-aware replica selection: comparing <code>load_aware</code> and <code>least_request</code> routing on live vLLM replicas.
+    <br/><br/>
+    <sub>Tracking issue <a href="https://github.com/vllm-project/semantic-router/issues/6871">#6871</a></sub>
+  </td>
+  <td valign="top">
+    Built the company's first internal coding agent (ReAct on LangGraph, RAG memory, permission-gated tools), now used by 500+ engineers. Training a cost-aware routing model on real agent trajectories.
+    <br/><br/>
+    <sub>LiteLLM + Langfuse collection, labeled with LLM-as-judge</sub>
+  </td>
+</tr></tbody>
+</table>
 
-My research background is in image restoration at National Chengchi University. I received an Academia Sinica Fellowship.
+&nbsp;
+
+<img src="https://img.shields.io/badge/%E2%96%B8%20OPEN%20SOURCE-0b0d1a?style=for-the-badge&labelColor=7c5cf0" alt="Open source"/>
+
+Selected merged pull requests to [vllm-project/semantic-router](https://github.com/vllm-project/semantic-router):
+
+| Area | What I shipped | Pull requests |
+|---|---|---|
+| **Model selection** | A per-decision selector that weighs quality, latency, cost, and in-flight load against SLO limits. Agent harnesses can ask for a fresh decision mid-session. | [#1953](https://github.com/vllm-project/semantic-router/pull/1953) · [#5617](https://github.com/vllm-project/semantic-router/pull/5617) |
+| **GPU runtime** | Classifiers on NVIDIA GPUs (no silent CPU fallback), x86 and `linux/arm64` CUDA images, **65–240×** faster than CPU on an RTX 4090. Less host memory on load, idle allocator cache release on integrated GPUs, gated-delta fusion without `causal-conv1d`. | [#5615](https://github.com/vllm-project/semantic-router/pull/5615) · [#5258](https://github.com/vllm-project/semantic-router/pull/5258) · [#5892](https://github.com/vllm-project/semantic-router/pull/5892) · [#5694](https://github.com/vllm-project/semantic-router/pull/5694) |
+| **Multimodal** | Image inputs for classification, evaluation, and embedding endpoints. Unit normalization after truncating embeddings. Letterboxing for wide images. | [#2104](https://github.com/vllm-project/semantic-router/pull/2104) · [#2188](https://github.com/vllm-project/semantic-router/pull/2188) · [#7274](https://github.com/vllm-project/semantic-router/pull/7274) |
+| **Request path** | Session telemetry off the hot path. Streaming cache hits restored. Cancellation propagated through all six semantic-cache backends. | [#5610](https://github.com/vllm-project/semantic-router/pull/5610) · [#2034](https://github.com/vllm-project/semantic-router/pull/2034) · [#2919](https://github.com/vllm-project/semantic-router/pull/2919) |
+
+Also in [llm-d Router](https://github.com/llm-d/llm-d-router): multimodal prefix-cache misses on salted requests ([#4138](https://github.com/llm-d/llm-d-router/pull/4138)) and early eviction of shared speculative entries ([#3701](https://github.com/llm-d/llm-d-router/pull/3701)).
+
+<p align="center"><b><a href="https://github.com/vllm-project/semantic-router/pulls?q=is%3Apr+author%3AWUKUNTAI-0211+is%3Amerged">All merged PRs ↗</a></b></p>
+
+&nbsp;
+
+<img src="https://img.shields.io/badge/%E2%96%B8%20BACKGROUND-0b0d1a?style=for-the-badge&labelColor=7c5cf0" alt="Background"/>
+
+- **M.S. Computer Science**, National Chengchi University: multi-weather image restoration with dual-modal prompts. Academia Sinica Fellowship.
+- ***Restore Anything Anywhere***, IEEE MMSP 2026.
+
+&nbsp;
+
+<img src="https://img.shields.io/badge/%E2%96%B8%20STACK-0b0d1a?style=for-the-badge&labelColor=7c5cf0" alt="Stack"/>
+
+<p>
+  <img src="https://img.shields.io/badge/Go-0b0d1a?style=flat-square&logo=go" alt="Go"/>
+  <img src="https://img.shields.io/badge/Python-0b0d1a?style=flat-square&logo=python" alt="Python"/>
+  <img src="https://img.shields.io/badge/Rust-0b0d1a?style=flat-square&logo=rust" alt="Rust"/>
+  <img src="https://img.shields.io/badge/CUDA-0b0d1a?style=flat-square&logo=nvidia" alt="CUDA"/>
+  <img src="https://img.shields.io/badge/PyTorch-0b0d1a?style=flat-square&logo=pytorch" alt="PyTorch"/>
+  <img src="https://img.shields.io/badge/ONNX_Runtime-0b0d1a?style=flat-square&logo=onnx" alt="ONNX Runtime"/>
+  <img src="https://img.shields.io/badge/Redis-0b0d1a?style=flat-square&logo=redis" alt="Redis"/>
+  <img src="https://img.shields.io/badge/Docker-0b0d1a?style=flat-square&logo=docker" alt="Docker"/>
+  <img src="https://img.shields.io/badge/LangGraph-0b0d1a?style=flat-square&logo=langchain" alt="LangGraph"/>
+  <img src="https://img.shields.io/badge/MCP-0b0d1a?style=flat-square&logo=modelcontextprotocol" alt="MCP"/>
+</p>
+
+&nbsp;
+
+<div align="center">
+  <img src="assets/space-shooter.gif" alt="Space shooter game played on my contribution graph, redrawn daily" width="100%"/>
+  <sub><code>request → classify → select → serve</code></sub>
+</div>
