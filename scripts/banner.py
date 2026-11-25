@@ -2,10 +2,11 @@
 
 Usage: python scripts/banner.py   (writes assets/banner-light.svg and assets/banner-dark.svg)
 
-Scene: a prompt arrives, vLLM Semantic Router lights up the signals it
-checks (keyword, embedding, domain), makes a decision, and sends the request
-to one of four inference engines. Each engine card carries a live load bar,
-because the router also weighs in-flight load when picking a backend.
+Scene: a coding agent (Claude Code, Codex or OpenCode) sends a prompt,
+vLLM Semantic Router lights up the signals it checks (keyword, embedding,
+domain), decides which model should answer, and sends the request there.
+Each model is served by a different engine and carries a live load bar,
+because the router also weighs in-flight load.
 
 Animation is SMIL, which GitHub renders inside <img>. Fonts fall back to
 system fonts because an SVG loaded as an image cannot fetch web fonts.
@@ -34,23 +35,27 @@ THEMES = {
     ),
 }
 
-# prompt, decision shown in the router, engine card index
+# agent harnesses that send requests through the router
+SOURCES = ["Claude Code", "Codex", "OpenCode"]
+# prompt, decision shown in the router, model card index; source cycles
 REQUESTS = [
-    ("fix the failing Go test", "code → vLLM", 0),
-    ("prove √2 is irrational", "reasoning → SGLang", 1),
-    ("what's in this image?", "vision → TRT-LLM", 2),
-    ("summarize this email", "simple → Ollama", 3),
+    ("fix the failing Go test", "code → Qwen3-Coder", 0),
+    ("prove √2 is irrational", "reasoning → DeepSeek-R1", 1),
+    ("what's in this image?", "vision → Qwen2.5-VL", 2),
+    ("summarize this email", "simple → Llama-3.2", 3),
 ]
-# engine, model tag, resting load (0..1)
+SOURCE_OF = [0, 1, 2, 0]
+# model, engine · tier, resting load (0..1)
 ENGINES = [
-    ("vLLM", "coder-32b · data center", 0.35),
-    ("SGLang", "reasoner-70b · data center", 0.55),
-    ("TensorRT-LLM", "vlm-8b · cloud", 0.25),
-    ("Ollama", "edge-3b · edge", 0.15),
+    ("Qwen3-Coder-30B", "vLLM · data center", 0.35),
+    ("DeepSeek-R1", "SGLang · data center", 0.55),
+    ("Qwen2.5-VL-7B", "TensorRT-LLM · cloud", 0.25),
+    ("Llama-3.2-3B", "Ollama · edge", 0.15),
 ]
 SIGNALS = ["keyword", "embed", "domain"]
 
-CHIP_X0, CHIP_X1 = 420, 618
+SRC_X0, SRC_X1 = 434, 552
+SRC_YS = [112, 160, 208]
 RTR_X0, RTR_X1 = 640, 816
 RTR_Y0, RTR_Y1 = 108, 212
 MID_Y = (RTR_Y0 + RTR_Y1) // 2
@@ -69,6 +74,12 @@ def branch(i: int) -> str:
             f"{CARD_X0 - 50},{y} {CARD_X0},{y}")
 
 
+def intake(s: int) -> str:
+    y = SRC_YS[s]
+    return (f"M{SRC_X1},{y} C{SRC_X1 + 50},{y} "
+            f"{RTR_X0 - 50},{MID_Y} {RTR_X0},{MID_Y}")
+
+
 def draw(t: dict) -> str:
     cycle = SLOT * len(REQUESTS)
 
@@ -79,7 +90,7 @@ def draw(t: dict) -> str:
     f = 1 / len(REQUESTS)
     k = lambda x: f"{x * f:.4f}"  # noqa: E731  position inside a slot -> keyTime
 
-    o = [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Kun-Tai Wu, semantic model routing. Prompts enter vLLM Semantic Router and are routed to vLLM, SGLang, TensorRT-LLM or Ollama.">
+    o = [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Kun-Tai Wu, semantic model routing. Prompts from Claude Code, Codex and OpenCode enter vLLM Semantic Router, which picks a model served by vLLM, SGLang, TensorRT-LLM or Ollama.">
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="{t['bg0']}"/><stop offset="1" stop-color="{t['bg1']}"/>
@@ -111,24 +122,40 @@ def draw(t: dict) -> str:
 <text x="52" y="250" font-family="{SANS}" font-size="16" fill="{t['muted']}">Associate Researcher · Delta Electronics</text>
 
 <!-- column labels -->
-<text x="{CHIP_X0}" y="{MID_Y - 30}" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1.5">PROMPT</text>
-<text x="{CARD_X0}" y="{CARD_TOP - 12}" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1.5">ENGINES</text>
+<text x="{SRC_X0}" y="{SRC_YS[0] - 28}" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1.5">AGENTS</text>
+<text x="{CARD_X0}" y="{CARD_TOP - 12}" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1.5">MODELS</text>
 <text x="{(RTR_X0 + RTR_X1) // 2}" y="{H - 30}" text-anchor="middle" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1">cloud · data center · edge</text>
 
 <!-- wiring -->
-<line x1="{CHIP_X1}" y1="{MID_Y}" x2="{RTR_X0}" y2="{MID_Y}" stroke="{t['line']}" stroke-width="2"/>
 ''']
     for i in range(len(ENGINES)):
         o.append(f'<path d="{branch(i)}" fill="none" stroke="{t["line"]}" stroke-width="1.5"/>\n')
 
-    # prompt chips: slide in, hold, hand off to the router
-    o.append(f'<rect x="{CHIP_X0}" y="{MID_Y-17}" width="{CHIP_X1-CHIP_X0}" height="34" rx="17" fill="{t["chip"]}" stroke="{t["line"]}" stroke-width="1.2"/>\n')
+    for s_ in range(len(SOURCES)):
+        o.append(f'<path d="{intake(s_)}" fill="none" stroke="{t["line"]}" stroke-width="1.5"/>\n')
+
+    # agent sources: the sending agent lights up, a packet travels to the router
+    for s_, name in enumerate(SOURCES):
+        y = SRC_YS[s_]
+        o.append(f'''<rect x="{SRC_X0}" y="{y-15}" width="{SRC_X1-SRC_X0}" height="30" rx="15" fill="{t['chip']}" stroke="{t['line']}" stroke-width="1.2"/>
+<text x="{(SRC_X0+SRC_X1)//2}" y="{y+5}" text-anchor="middle" font-family="{SANS}" font-size="13" font-weight="600" fill="{t['ink']}">{name}</text>
+''')
     for i, (prompt, _, _) in enumerate(REQUESTS):
-        o.append(f'''<g opacity="0">
-  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;{k(.08)};{k(.88)};{k(.98)};1" {anim(i)}/>
-  <animateTransform attributeName="transform" type="translate" values="-14,0;0,0;0,0;10,0;10,0" keyTimes="0;{k(.08)};{k(.88)};{k(.98)};1" {anim(i)}/>
-  <text x="{(CHIP_X0+CHIP_X1)//2}" y="{MID_Y+4}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="{t['ink']}">“{escape(prompt)}”</text>
-</g>
+        s_ = SOURCE_OF[i]
+        y = SRC_YS[s_]
+        o.append(f'''<rect x="{SRC_X0}" y="{y-15}" width="{SRC_X1-SRC_X0}" height="30" rx="15" fill="none" stroke="{t['accent']}" stroke-width="2" opacity="0">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;{k(.04)};{k(.30)};{k(.45)};1" {anim(i)}/>
+</rect>
+<path d="{intake(s_)}" fill="none" stroke="{t['accent']}" stroke-width="2.5" opacity="0" filter="url(#glow)">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;{k(.06)};{k(.26)};{k(.42)};1" {anim(i)}/>
+</path>
+<circle r="5" fill="{t['hot']}" opacity="0" filter="url(#glow)">
+  <animateMotion path="{intake(s_)}" keyPoints="0;0;1;1" keyTimes="0;{k(.04)};{k(.28)};1" calcMode="linear" {anim(i)}/>
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;{k(.04)};{k(.27)};{k(.29)};1" {anim(i)}/>
+</circle>
+<text x="{(RTR_X0+RTR_X1)//2}" y="{RTR_Y0-14}" text-anchor="middle" font-family="{MONO}" font-size="11.5" fill="{t['ink']}" opacity="0">“{escape(prompt)}”
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{k(.22)};{k(.30)};{k(.92)};{k(1.0)};1" {anim(i)}/>
+</text>
 ''')
 
     # router
@@ -146,7 +173,7 @@ def draw(t: dict) -> str:
         x = px0 + s * (pill_w + gap)
         o.append(f'<rect x="{x}" y="{RTR_Y0+40}" width="{pill_w}" height="18" rx="9" fill="none" stroke="{t["line"]}" stroke-width="1"/>\n')
         # light each signal in turn, once per request
-        on0, on1 = .14 + s * .12, .20 + s * .12
+        on0, on1 = .30 + s * .09, .35 + s * .09
         o.append(f'''<rect x="{x}" y="{RTR_Y0+40}" width="{pill_w}" height="18" rx="9" fill="{t['accent']}" fill-opacity="0.25" stroke="{t['accent']}" stroke-width="1" opacity="0">
   <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{on0:.2f};{on1:.2f};0.90;0.98;1" dur="{SLOT}s" repeatCount="indefinite"/>
 </rect>
