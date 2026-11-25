@@ -1,26 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 320" width="1120" height="320" role="img" aria-label="Kun-Tai Wu, LLM inference routing, vLLM Semantic Router maintainer">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 320" width="1120" height="320" role="img" aria-label="Kun-Tai Wu, LLM inference routing. Prompts enter vLLM Semantic Router and are routed to vLLM, SGLang, TensorRT-LLM or Ollama.">
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="#fbfaff"/><stop offset="1" stop-color="#eeeafd"/>
   </linearGradient>
   <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="#6d4fe0" stop-opacity="0.35"/>
+    <stop offset="0" stop-color="#6d4fe0" stop-opacity="0.32"/>
     <stop offset="1" stop-color="#6d4fe0" stop-opacity="0"/>
   </radialGradient>
   <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
-    <circle cx="1" cy="1" r="1" fill="#4c3fa0" fill-opacity="0.09"/>
+    <circle cx="1" cy="1" r="1" fill="#4c3fa0" fill-opacity="0.08"/>
   </pattern>
   <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-    <feGaussianBlur stdDeviation="3" result="b"/>
+    <feGaussianBlur stdDeviation="2.6" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
   <clipPath id="frame"><rect x="1" y="1" width="1118" height="318" rx="18"/></clipPath>
 </defs>
 <g clip-path="url(#frame)">
   <rect width="1120" height="320" fill="url(#bg)"/>
-  <rect x="460" width="660" height="320" fill="url(#dots)"/>
-  <line x1="480" y1="52" x2="1090" y2="52" stroke="#cfc8ef" stroke-width="1"/>
-  <line x1="480" y1="268" x2="1090" y2="268" stroke="#cfc8ef" stroke-width="1"/>
+  <rect x="410" width="710" height="320" fill="url(#dots)"/>
 </g>
 <rect x="1" y="1" width="1118" height="318" rx="18" fill="none" stroke="#dcd6f5" stroke-width="1.5"/>
 
@@ -31,60 +29,149 @@
 <text x="52" y="226" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" fill="#6b6890">Maintainer · vLLM Semantic Router</text>
 <text x="52" y="250" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" fill="#6b6890">Associate Researcher · Delta Electronics</text>
 
+<!-- column labels -->
+<text x="420" y="130" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" fill="#6b6890" letter-spacing="1.5">PROMPT</text>
+<text x="890" y="34" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" fill="#6b6890" letter-spacing="1.5">ENGINES</text>
+<text x="728" y="290" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11" fill="#6b6890" letter-spacing="1">cloud · data center · edge</text>
+
 <!-- wiring -->
-<text x="500" y="146" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#6b6890" letter-spacing="1.5">REQUEST</text>
-<line x1="500" y1="160" x2="672" y2="160" stroke="#cfc8ef" stroke-width="2"/>
-<path d="M828,160 C888,160 888,92 948,92" fill="none" stroke="#cfc8ef" stroke-width="1.5"/>
-<path d="M828,160 C888,160 888,160 948,160" fill="none" stroke="#cfc8ef" stroke-width="1.5"/>
-<path d="M828,160 C888,160 888,228 948,228" fill="none" stroke="#cfc8ef" stroke-width="1.5"/>
-<path d="M828,160 C888,160 888,92 948,92" fill="none" stroke="#6d4fe0" stroke-width="2.5" stroke-opacity="0" filter="url(#glow)">
-  <animate attributeName="stroke-opacity" values="0;0;1;0;0" keyTimes="0;0.15;0.28;0.42;1" dur="6.0s" begin="0.00s" repeatCount="indefinite"/>
-</path>
-<circle r="5" fill="#0f9488" opacity="0" filter="url(#glow)">
-  <animateMotion path="M500,160 L828,160 C888,160 888,92 948,92" keyPoints="0;1;1" keyTimes="0;0.30;1" calcMode="linear" dur="6.0s" begin="0.00s" repeatCount="indefinite"/>
-  <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.29;0.30;1" dur="6.0s" begin="0.00s" repeatCount="indefinite"/>
-</circle>
-<path d="M828,160 C888,160 888,160 948,160" fill="none" stroke="#6d4fe0" stroke-width="2.5" stroke-opacity="0" filter="url(#glow)">
-  <animate attributeName="stroke-opacity" values="0;0;1;0;0" keyTimes="0;0.15;0.28;0.42;1" dur="6.0s" begin="2.00s" repeatCount="indefinite"/>
-</path>
-<circle r="5" fill="#0f9488" opacity="0" filter="url(#glow)">
-  <animateMotion path="M500,160 L828,160 C888,160 888,160 948,160" keyPoints="0;1;1" keyTimes="0;0.30;1" calcMode="linear" dur="6.0s" begin="2.00s" repeatCount="indefinite"/>
-  <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.29;0.30;1" dur="6.0s" begin="2.00s" repeatCount="indefinite"/>
-</circle>
-<path d="M828,160 C888,160 888,228 948,228" fill="none" stroke="#6d4fe0" stroke-width="2.5" stroke-opacity="0" filter="url(#glow)">
-  <animate attributeName="stroke-opacity" values="0;0;1;0;0" keyTimes="0;0.15;0.28;0.42;1" dur="6.0s" begin="4.00s" repeatCount="indefinite"/>
-</path>
-<circle r="5" fill="#0f9488" opacity="0" filter="url(#glow)">
-  <animateMotion path="M500,160 L828,160 C888,160 888,228 948,228" keyPoints="0;1;1" keyTimes="0;0.30;1" calcMode="linear" dur="6.0s" begin="4.00s" repeatCount="indefinite"/>
-  <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.29;0.30;1" dur="6.0s" begin="4.00s" repeatCount="indefinite"/>
-</circle>
-<ellipse cx="750" cy="160" rx="130" ry="70" fill="url(#halo)">
-  <animate attributeName="opacity" values="0.55;1;0.55" dur="2.0s" repeatCount="indefinite"/>
+<line x1="618" y1="160" x2="640" y2="160" stroke="#cfc8ef" stroke-width="2"/>
+<path d="M816,160 C866,160 840,70 890,70" fill="none" stroke="#cfc8ef" stroke-width="1.5"/>
+<path d="M816,160 C866,160 840,130 890,130" fill="none" stroke="#cfc8ef" stroke-width="1.5"/>
+<path d="M816,160 C866,160 840,190 890,190" fill="none" stroke="#cfc8ef" stroke-width="1.5"/>
+<path d="M816,160 C866,160 840,250 890,250" fill="none" stroke="#cfc8ef" stroke-width="1.5"/>
+<rect x="420" y="143" width="198" height="34" rx="17" fill="#f3f0ff" stroke="#cfc8ef" stroke-width="1.2"/>
+<g opacity="0">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+  <animateTransform attributeName="transform" type="translate" values="-14,0;0,0;0,0;10,0;10,0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+  <text x="519" y="164" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#15132b">“fix the failing Go test”</text>
+</g>
+<g opacity="0">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+  <animateTransform attributeName="transform" type="translate" values="-14,0;0,0;0,0;10,0;10,0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+  <text x="519" y="164" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#15132b">“prove √2 is irrational”</text>
+</g>
+<g opacity="0">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+  <animateTransform attributeName="transform" type="translate" values="-14,0;0,0;0,0;10,0;10,0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+  <text x="519" y="164" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#15132b">“what's in this image?”</text>
+</g>
+<g opacity="0">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+  <animateTransform attributeName="transform" type="translate" values="-14,0;0,0;0,0;10,0;10,0" keyTimes="0;0.0200;0.2200;0.2450;1" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+  <text x="519" y="164" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#15132b">“summarize this email”</text>
+</g>
+<ellipse cx="728" cy="160" rx="140" ry="90" fill="url(#halo)">
+  <animate attributeName="opacity" values="0.5;1;0.5" dur="2.0s" repeatCount="indefinite"/>
 </ellipse>
-<rect x="672" y="137" width="156" height="46" rx="10" fill="#ffffff" stroke="#6d4fe0" stroke-width="1.5"/>
-<text x="750" y="166" text-anchor="middle" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#15132b">Semantic Router</text>
-<text x="750" y="210" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#5b43c9" opacity="0">intent: code → replica A
-  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.30;0.33;1" dur="6.0s" begin="0.00s" repeatCount="indefinite"/>
-</text>
-<text x="750" y="210" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#5b43c9" opacity="0">intent: math → replica B
-  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.30;0.33;1" dur="6.0s" begin="2.00s" repeatCount="indefinite"/>
-</text>
-<text x="750" y="210" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="12" fill="#5b43c9" opacity="0">intent: chat → replica C
-  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.30;0.33;1" dur="6.0s" begin="4.00s" repeatCount="indefinite"/>
-</text>
-<rect x="948" y="75" width="122" height="34" rx="8" fill="#ffffff" stroke="#cfc8ef" stroke-width="1.2"/>
-<rect x="948" y="75" width="122" height="34" rx="8" fill="none" stroke="#0f9488" stroke-width="2" opacity="0">
-  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.28;0.31;0.55;1" dur="6.0s" begin="0.00s" repeatCount="indefinite"/>
+<rect x="640" y="108" width="176" height="104" rx="12" fill="#ffffff" stroke="#6d4fe0" stroke-width="1.5"/>
+<text x="728" y="134" text-anchor="middle" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#15132b">Semantic Router</text>
+<line x1="652" y1="178" x2="804" y2="178" stroke="#cfc8ef" stroke-width="1"/>
+<rect x="649" y="148" width="50" height="18" rx="9" fill="none" stroke="#cfc8ef" stroke-width="1"/>
+<rect x="649" y="148" width="50" height="18" rx="9" fill="#6d4fe0" fill-opacity="0.25" stroke="#6d4fe0" stroke-width="1" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.14;0.20;0.90;0.98;1" dur="2.0s" repeatCount="indefinite"/>
 </rect>
-<text x="1009" y="97" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="13" fill="#15132b">vLLM replica A</text>
-<rect x="948" y="143" width="122" height="34" rx="8" fill="#ffffff" stroke="#cfc8ef" stroke-width="1.2"/>
-<rect x="948" y="143" width="122" height="34" rx="8" fill="none" stroke="#0f9488" stroke-width="2" opacity="0">
-  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.28;0.31;0.55;1" dur="6.0s" begin="2.00s" repeatCount="indefinite"/>
+<text x="674" y="161" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="9.5" fill="#5b43c9">keyword</text>
+<rect x="703" y="148" width="50" height="18" rx="9" fill="none" stroke="#cfc8ef" stroke-width="1"/>
+<rect x="703" y="148" width="50" height="18" rx="9" fill="#6d4fe0" fill-opacity="0.25" stroke="#6d4fe0" stroke-width="1" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.26;0.32;0.90;0.98;1" dur="2.0s" repeatCount="indefinite"/>
 </rect>
-<text x="1009" y="165" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="13" fill="#15132b">vLLM replica B</text>
-<rect x="948" y="211" width="122" height="34" rx="8" fill="#ffffff" stroke="#cfc8ef" stroke-width="1.2"/>
-<rect x="948" y="211" width="122" height="34" rx="8" fill="none" stroke="#0f9488" stroke-width="2" opacity="0">
-  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.28;0.31;0.55;1" dur="6.0s" begin="4.00s" repeatCount="indefinite"/>
+<text x="728" y="161" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="9.5" fill="#5b43c9">embed</text>
+<rect x="757" y="148" width="50" height="18" rx="9" fill="none" stroke="#cfc8ef" stroke-width="1"/>
+<rect x="757" y="148" width="50" height="18" rx="9" fill="#6d4fe0" fill-opacity="0.25" stroke="#6d4fe0" stroke-width="1" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.38;0.44;0.90;0.98;1" dur="2.0s" repeatCount="indefinite"/>
 </rect>
-<text x="1009" y="233" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="13" fill="#15132b">vLLM replica C</text>
+<text x="782" y="161" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="9.5" fill="#5b43c9">domain</text>
+<text x="728" y="198" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11.5" font-weight="600" fill="#0f9488" opacity="0">code → vLLM
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1450;0.1600;0.2425;0.2500;1" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+</text>
+<text x="728" y="198" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11.5" font-weight="600" fill="#0f9488" opacity="0">reasoning → SGLang
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1450;0.1600;0.2425;0.2500;1" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+</text>
+<text x="728" y="198" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11.5" font-weight="600" fill="#0f9488" opacity="0">vision → TRT-LLM
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1450;0.1600;0.2425;0.2500;1" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+</text>
+<text x="728" y="198" text-anchor="middle" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="11.5" font-weight="600" fill="#0f9488" opacity="0">simple → Ollama
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1450;0.1600;0.2425;0.2500;1" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+</text>
+<path d="M816,160 C866,160 840,70 890,70" fill="none" stroke="#6d4fe0" stroke-width="2.5" opacity="0" filter="url(#glow)">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1550;0.1750;0.2300;0.2875;1" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+</path>
+<circle r="5" fill="#0f9488" opacity="0" filter="url(#glow)">
+  <animateMotion path="M816,160 C866,160 840,70 890,70" keyPoints="0;0;1;1" keyTimes="0;0.1600;0.2300;1" calcMode="linear" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1575;0.1625;0.2300;0.2350;1" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+</circle>
+<path d="M816,160 C866,160 840,130 890,130" fill="none" stroke="#6d4fe0" stroke-width="2.5" opacity="0" filter="url(#glow)">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1550;0.1750;0.2300;0.2875;1" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+</path>
+<circle r="5" fill="#0f9488" opacity="0" filter="url(#glow)">
+  <animateMotion path="M816,160 C866,160 840,130 890,130" keyPoints="0;0;1;1" keyTimes="0;0.1600;0.2300;1" calcMode="linear" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1575;0.1625;0.2300;0.2350;1" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+</circle>
+<path d="M816,160 C866,160 840,190 890,190" fill="none" stroke="#6d4fe0" stroke-width="2.5" opacity="0" filter="url(#glow)">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1550;0.1750;0.2300;0.2875;1" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+</path>
+<circle r="5" fill="#0f9488" opacity="0" filter="url(#glow)">
+  <animateMotion path="M816,160 C866,160 840,190 890,190" keyPoints="0;0;1;1" keyTimes="0;0.1600;0.2300;1" calcMode="linear" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1575;0.1625;0.2300;0.2350;1" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+</circle>
+<path d="M816,160 C866,160 840,250 890,250" fill="none" stroke="#6d4fe0" stroke-width="2.5" opacity="0" filter="url(#glow)">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1550;0.1750;0.2300;0.2875;1" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+</path>
+<circle r="5" fill="#0f9488" opacity="0" filter="url(#glow)">
+  <animateMotion path="M816,160 C866,160 840,250 890,250" keyPoints="0;0;1;1" keyTimes="0;0.1600;0.2300;1" calcMode="linear" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1575;0.1625;0.2300;0.2350;1" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+</circle>
+<rect x="890" y="46" width="200" height="48" rx="10" fill="#ffffff" stroke="#cfc8ef" stroke-width="1.2"/>
+<rect x="890" y="46" width="200" height="48" rx="10" fill="none" stroke="#0f9488" stroke-width="2" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.2250;0.2400;0.4000;1" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+</rect>
+<text x="904" y="66" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#15132b">vLLM</text>
+<text x="904" y="80" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="10" fill="#6b6890">coder-32b · data center</text>
+<circle cx="1074" cy="61" r="3.5" fill="#0f9488">
+  <animate attributeName="opacity" values="1;0.35;1" dur="1.6s" repeatCount="indefinite"/>
+</circle>
+<rect x="904" y="86" width="172" height="3" rx="1.5" fill="#e7e2fb"/>
+<rect x="904" y="86" width="60" height="3" rx="1.5" fill="#6d4fe0">
+  <animate attributeName="width" values="60;60;137;60;60" keyTimes="0;0.2300;0.2625;0.6000;1" dur="8.0s" begin="0.00s" repeatCount="indefinite"/>
+</rect>
+<rect x="890" y="106" width="200" height="48" rx="10" fill="#ffffff" stroke="#cfc8ef" stroke-width="1.2"/>
+<rect x="890" y="106" width="200" height="48" rx="10" fill="none" stroke="#0f9488" stroke-width="2" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.2250;0.2400;0.4000;1" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+</rect>
+<text x="904" y="126" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#15132b">SGLang</text>
+<text x="904" y="140" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="10" fill="#6b6890">reasoner-70b · data center</text>
+<circle cx="1074" cy="121" r="3.5" fill="#0f9488">
+  <animate attributeName="opacity" values="1;0.35;1" dur="2.0s" repeatCount="indefinite"/>
+</circle>
+<rect x="904" y="146" width="172" height="3" rx="1.5" fill="#e7e2fb"/>
+<rect x="904" y="146" width="94" height="3" rx="1.5" fill="#6d4fe0">
+  <animate attributeName="width" values="94;94;163;94;94" keyTimes="0;0.2300;0.2625;0.6000;1" dur="8.0s" begin="2.00s" repeatCount="indefinite"/>
+</rect>
+<rect x="890" y="166" width="200" height="48" rx="10" fill="#ffffff" stroke="#cfc8ef" stroke-width="1.2"/>
+<rect x="890" y="166" width="200" height="48" rx="10" fill="none" stroke="#0f9488" stroke-width="2" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.2250;0.2400;0.4000;1" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+</rect>
+<text x="904" y="186" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#15132b">TensorRT-LLM</text>
+<text x="904" y="200" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="10" fill="#6b6890">vlm-8b · cloud</text>
+<circle cx="1074" cy="181" r="3.5" fill="#0f9488">
+  <animate attributeName="opacity" values="1;0.35;1" dur="2.4s" repeatCount="indefinite"/>
+</circle>
+<rect x="904" y="206" width="172" height="3" rx="1.5" fill="#e7e2fb"/>
+<rect x="904" y="206" width="43" height="3" rx="1.5" fill="#6d4fe0">
+  <animate attributeName="width" values="43;43;120;43;43" keyTimes="0;0.2300;0.2625;0.6000;1" dur="8.0s" begin="4.00s" repeatCount="indefinite"/>
+</rect>
+<rect x="890" y="226" width="200" height="48" rx="10" fill="#ffffff" stroke="#cfc8ef" stroke-width="1.2"/>
+<rect x="890" y="226" width="200" height="48" rx="10" fill="none" stroke="#0f9488" stroke-width="2" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.2250;0.2400;0.4000;1" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+</rect>
+<text x="904" y="246" font-family="Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#15132b">Ollama</text>
+<text x="904" y="260" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" font-size="10" fill="#6b6890">edge-3b · edge</text>
+<circle cx="1074" cy="241" r="3.5" fill="#0f9488">
+  <animate attributeName="opacity" values="1;0.35;1" dur="2.8s" repeatCount="indefinite"/>
+</circle>
+<rect x="904" y="266" width="172" height="3" rx="1.5" fill="#e7e2fb"/>
+<rect x="904" y="266" width="25" height="3" rx="1.5" fill="#6d4fe0">
+  <animate attributeName="width" values="25;25;103;25;25" keyTimes="0;0.2300;0.2625;0.6000;1" dur="8.0s" begin="6.00s" repeatCount="indefinite"/>
+</rect>
 </svg>

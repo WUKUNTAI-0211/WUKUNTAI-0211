@@ -8,7 +8,7 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg"/>
-    <img src="assets/banner-light.svg" alt="Kun-Tai Wu, LLM inference routing. Animated: requests enter vLLM Semantic Router, are classified by intent, and are sent to the matching vLLM replica." width="100%"/>
+    <img src="assets/banner-light.svg" alt="Kun-Tai Wu, LLM inference routing. Animated: prompts enter vLLM Semantic Router, which checks keyword, embedding and domain signals and routes each one to vLLM, SGLang, TensorRT-LLM or Ollama." width="100%"/>
   </picture>
 </div>
 

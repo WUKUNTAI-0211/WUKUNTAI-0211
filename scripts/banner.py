@@ -2,78 +2,104 @@
 
 Usage: python scripts/banner.py   (writes assets/banner-light.svg and assets/banner-dark.svg)
 
-A request enters vLLM Semantic Router, the router classifies its intent,
-and the request is sent to the matching vLLM replica. Animation is SMIL,
-which GitHub renders inside <img>. Fonts fall back to system fonts because
-an SVG loaded as an image cannot fetch web fonts.
+Scene: a prompt arrives, vLLM Semantic Router lights up the signals it
+checks (keyword, embedding, domain), makes a decision, and sends the request
+to one of four inference engines. Each engine card carries a live load bar,
+because the router also weighs in-flight load when picking a backend.
+
+Animation is SMIL, which GitHub renders inside <img>. Fonts fall back to
+system fonts because an SVG loaded as an image cannot fetch web fonts.
 """
 
 from pathlib import Path
+from xml.sax.saxutils import escape
 
 W, H = 1120, 320
-CYCLE = 6.0  # seconds for all three requests
+SLOT = 2.0                      # seconds per request
 SANS = "Inter, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif"
 MONO = "'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace"
 
 THEMES = {
     "dark": dict(
         bg0="#0b0d1a", bg1="#171a3d", border="#2a2e55", ink="#f1f0ff",
-        sub="#c4b5fd", muted="#8b8fb5", line="#3b3f6e", accent="#a78bfa",
-        accent2="#5eead4", box="#14173a", grid="#ffffff", grid_op="0.06",
+        sub="#c4b5fd", muted="#8b8fb5", line="#353a68", accent="#a78bfa",
+        hot="#5eead4", box="#13163a", chip="#1b1f48", track="#262a55",
+        grid="#ffffff", grid_op="0.05",
     ),
     "light": dict(
         bg0="#fbfaff", bg1="#eeeafd", border="#dcd6f5", ink="#15132b",
         sub="#5b43c9", muted="#6b6890", line="#cfc8ef", accent="#6d4fe0",
-        accent2="#0f9488", box="#ffffff", grid="#4c3fa0", grid_op="0.09",
+        hot="#0f9488", box="#ffffff", chip="#f3f0ff", track="#e7e2fb",
+        grid="#4c3fa0", grid_op="0.08",
     ),
 }
 
-# (y of replica, intent label shown under the router)
-ROUTES = [
-    (92, "code", "replica A"),
-    (160, "math", "replica B"),
-    (228, "chat", "replica C"),
+# prompt, decision shown in the router, engine card index
+REQUESTS = [
+    ("fix the failing Go test", "code → vLLM", 0),
+    ("prove √2 is irrational", "reasoning → SGLang", 1),
+    ("what's in this image?", "vision → TRT-LLM", 2),
+    ("summarize this email", "simple → Ollama", 3),
 ]
-REQ_X0, ROUTER_X0, ROUTER_X1, REP_X = 500, 672, 828, 948
-MID_Y = 160
+# engine, model tag, resting load (0..1)
+ENGINES = [
+    ("vLLM", "coder-32b · data center", 0.35),
+    ("SGLang", "reasoner-70b · data center", 0.55),
+    ("TensorRT-LLM", "vlm-8b · cloud", 0.25),
+    ("Ollama", "edge-3b · edge", 0.15),
+]
+SIGNALS = ["keyword", "embed", "domain"]
+
+CHIP_X0, CHIP_X1 = 420, 618
+RTR_X0, RTR_X1 = 640, 816
+RTR_Y0, RTR_Y1 = 108, 212
+MID_Y = (RTR_Y0 + RTR_Y1) // 2
+CARD_X0, CARD_X1 = 890, 1090
+CARD_H, CARD_GAP, CARD_TOP = 48, 12, 46
+BAR_W = CARD_X1 - CARD_X0 - 28
 
 
-def route_path(y: int) -> str:
-    return (f"M{REQ_X0},{MID_Y} L{ROUTER_X1},{MID_Y} "
-            f"C{ROUTER_X1 + 60},{MID_Y} {REP_X - 60},{y} {REP_X},{y}")
+def card_cy(i: int) -> int:
+    return CARD_TOP + i * (CARD_H + CARD_GAP) + CARD_H // 2
 
 
-def branch_path(y: int) -> str:
-    return (f"M{ROUTER_X1},{MID_Y} "
-            f"C{ROUTER_X1 + 60},{MID_Y} {REP_X - 60},{y} {REP_X},{y}")
+def branch(i: int) -> str:
+    y = card_cy(i)
+    return (f"M{RTR_X1},{MID_Y} C{RTR_X1 + 50},{MID_Y} "
+            f"{CARD_X0 - 50},{y} {CARD_X0},{y}")
 
 
 def draw(t: dict) -> str:
-    third = CYCLE / 3
-    # within one CYCLE, a packet travels during [0, 0.30] of its own timeline
-    out = [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Kun-Tai Wu, LLM inference routing, vLLM Semantic Router maintainer">
+    cycle = SLOT * len(REQUESTS)
+
+    def anim(i: int) -> str:
+        return f'dur="{cycle}s" begin="{i * SLOT:.2f}s" repeatCount="indefinite"'
+
+    # Fractions of one cycle. A request owns [0, 1/len) of its own timeline.
+    f = 1 / len(REQUESTS)
+    k = lambda x: f"{x * f:.4f}"  # noqa: E731  position inside a slot -> keyTime
+
+    o = [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Kun-Tai Wu, LLM inference routing. Prompts enter vLLM Semantic Router and are routed to vLLM, SGLang, TensorRT-LLM or Ollama.">
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="{t['bg0']}"/><stop offset="1" stop-color="{t['bg1']}"/>
   </linearGradient>
   <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="{t['accent']}" stop-opacity="0.35"/>
+    <stop offset="0" stop-color="{t['accent']}" stop-opacity="0.32"/>
     <stop offset="1" stop-color="{t['accent']}" stop-opacity="0"/>
   </radialGradient>
   <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
     <circle cx="1" cy="1" r="1" fill="{t['grid']}" fill-opacity="{t['grid_op']}"/>
   </pattern>
   <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-    <feGaussianBlur stdDeviation="3" result="b"/>
+    <feGaussianBlur stdDeviation="2.6" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
   <clipPath id="frame"><rect x="1" y="1" width="{W-2}" height="{H-2}" rx="18"/></clipPath>
 </defs>
 <g clip-path="url(#frame)">
   <rect width="{W}" height="{H}" fill="url(#bg)"/>
-  <rect x="460" width="{W-460}" height="{H}" fill="url(#dots)"/>
-  <line x1="480" y1="52" x2="1090" y2="52" stroke="{t['line']}" stroke-width="1"/>
-  <line x1="480" y1="268" x2="1090" y2="268" stroke="{t['line']}" stroke-width="1"/>
+  <rect x="410" width="{W-410}" height="{H}" fill="url(#dots)"/>
 </g>
 <rect x="1" y="1" width="{W-2}" height="{H-2}" rx="18" fill="none" stroke="{t['border']}" stroke-width="1.5"/>
 
@@ -84,53 +110,88 @@ def draw(t: dict) -> str:
 <text x="52" y="226" font-family="{SANS}" font-size="16" fill="{t['muted']}">Maintainer · vLLM Semantic Router</text>
 <text x="52" y="250" font-family="{SANS}" font-size="16" fill="{t['muted']}">Associate Researcher · Delta Electronics</text>
 
-<!-- wiring -->
-<text x="{REQ_X0}" y="{MID_Y-14}" font-family="{MONO}" font-size="12" fill="{t['muted']}" letter-spacing="1.5">REQUEST</text>
-<line x1="{REQ_X0}" y1="{MID_Y}" x2="{ROUTER_X0}" y2="{MID_Y}" stroke="{t['line']}" stroke-width="2"/>
-''']
-    for y, _, _ in ROUTES:
-        out.append(f'<path d="{branch_path(y)}" fill="none" stroke="{t["line"]}" stroke-width="1.5"/>\n')
+<!-- column labels -->
+<text x="{CHIP_X0}" y="{MID_Y - 30}" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1.5">PROMPT</text>
+<text x="{CARD_X0}" y="{CARD_TOP - 12}" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1.5">ENGINES</text>
+<text x="{(RTR_X0 + RTR_X1) // 2}" y="{H - 30}" text-anchor="middle" font-family="{MONO}" font-size="11" fill="{t['muted']}" letter-spacing="1">cloud · data center · edge</text>
 
-    # packets and lit branches
-    for i, (y, intent, rep) in enumerate(ROUTES):
-        begin = f"{i * third:.2f}s"
-        anim = f'dur="{CYCLE}s" begin="{begin}" repeatCount="indefinite"'
-        out.append(f'''<path d="{branch_path(y)}" fill="none" stroke="{t['accent']}" stroke-width="2.5" stroke-opacity="0" filter="url(#glow)">
-  <animate attributeName="stroke-opacity" values="0;0;1;0;0" keyTimes="0;0.15;0.28;0.42;1" {anim}/>
-</path>
-<circle r="5" fill="{t['accent2']}" opacity="0" filter="url(#glow)">
-  <animateMotion path="{route_path(y)}" keyPoints="0;1;1" keyTimes="0;0.30;1" calcMode="linear" {anim}/>
-  <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.29;0.30;1" {anim}/>
-</circle>
+<!-- wiring -->
+<line x1="{CHIP_X1}" y1="{MID_Y}" x2="{RTR_X0}" y2="{MID_Y}" stroke="{t['line']}" stroke-width="2"/>
+''']
+    for i in range(len(ENGINES)):
+        o.append(f'<path d="{branch(i)}" fill="none" stroke="{t["line"]}" stroke-width="1.5"/>\n')
+
+    # prompt chips: slide in, hold, hand off to the router
+    o.append(f'<rect x="{CHIP_X0}" y="{MID_Y-17}" width="{CHIP_X1-CHIP_X0}" height="34" rx="17" fill="{t["chip"]}" stroke="{t["line"]}" stroke-width="1.2"/>\n')
+    for i, (prompt, _, _) in enumerate(REQUESTS):
+        o.append(f'''<g opacity="0">
+  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;{k(.08)};{k(.88)};{k(.98)};1" {anim(i)}/>
+  <animateTransform attributeName="transform" type="translate" values="-14,0;0,0;0,0;10,0;10,0" keyTimes="0;{k(.08)};{k(.88)};{k(.98)};1" {anim(i)}/>
+  <text x="{(CHIP_X0+CHIP_X1)//2}" y="{MID_Y+4}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="{t['ink']}">“{escape(prompt)}”</text>
+</g>
 ''')
 
     # router
-    rw = ROUTER_X1 - ROUTER_X0
-    out.append(f'''<ellipse cx="{(ROUTER_X0+ROUTER_X1)//2}" cy="{MID_Y}" rx="130" ry="70" fill="url(#halo)">
-  <animate attributeName="opacity" values="0.55;1;0.55" dur="{third}s" repeatCount="indefinite"/>
+    cx = (RTR_X0 + RTR_X1) // 2
+    o.append(f'''<ellipse cx="{cx}" cy="{MID_Y}" rx="140" ry="90" fill="url(#halo)">
+  <animate attributeName="opacity" values="0.5;1;0.5" dur="{SLOT}s" repeatCount="indefinite"/>
 </ellipse>
-<rect x="{ROUTER_X0}" y="{MID_Y-23}" width="{rw}" height="46" rx="10" fill="{t['box']}" stroke="{t['accent']}" stroke-width="1.5"/>
-<text x="{(ROUTER_X0+ROUTER_X1)//2}" y="{MID_Y+6}" text-anchor="middle" font-family="{SANS}" font-size="16" font-weight="600" fill="{t['ink']}">Semantic Router</text>
+<rect x="{RTR_X0}" y="{RTR_Y0}" width="{RTR_X1-RTR_X0}" height="{RTR_Y1-RTR_Y0}" rx="12" fill="{t['box']}" stroke="{t['accent']}" stroke-width="1.5"/>
+<text x="{cx}" y="{RTR_Y0+26}" text-anchor="middle" font-family="{SANS}" font-size="15" font-weight="600" fill="{t['ink']}">Semantic Router</text>
+<line x1="{RTR_X0+12}" y1="{RTR_Y0+70}" x2="{RTR_X1-12}" y2="{RTR_Y0+70}" stroke="{t['line']}" stroke-width="1"/>
 ''')
-    # decision label under router, one per request
-    for i, (y, intent, rep) in enumerate(ROUTES):
-        anim = f'dur="{CYCLE}s" begin="{i * third:.2f}s" repeatCount="indefinite"'
-        out.append(f'''<text x="{(ROUTER_X0+ROUTER_X1)//2}" y="{MID_Y+50}" text-anchor="middle" font-family="{MONO}" font-size="12" fill="{t['sub']}" opacity="0">intent: {intent} → {rep}
-  <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.08;0.30;0.33;1" {anim}/>
+    pill_w, gap = 50, 4
+    px0 = cx - (3 * pill_w + 2 * gap) // 2
+    for s, name in enumerate(SIGNALS):
+        x = px0 + s * (pill_w + gap)
+        o.append(f'<rect x="{x}" y="{RTR_Y0+40}" width="{pill_w}" height="18" rx="9" fill="none" stroke="{t["line"]}" stroke-width="1"/>\n')
+        # light each signal in turn, once per request
+        on0, on1 = .14 + s * .12, .20 + s * .12
+        o.append(f'''<rect x="{x}" y="{RTR_Y0+40}" width="{pill_w}" height="18" rx="9" fill="{t['accent']}" fill-opacity="0.25" stroke="{t['accent']}" stroke-width="1" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{on0:.2f};{on1:.2f};0.90;0.98;1" dur="{SLOT}s" repeatCount="indefinite"/>
+</rect>
+<text x="{x + pill_w // 2}" y="{RTR_Y0+53}" text-anchor="middle" font-family="{MONO}" font-size="9.5" fill="{t['sub']}">{name}</text>
+''')
+    for i, (_, decision, _) in enumerate(REQUESTS):
+        o.append(f'''<text x="{cx}" y="{RTR_Y0+90}" text-anchor="middle" font-family="{MONO}" font-size="11.5" font-weight="600" fill="{t['hot']}" opacity="0">{escape(decision)}
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{k(.58)};{k(.64)};{k(.97)};{k(1.0)};1" {anim(i)}/>
 </text>
 ''')
 
-    # replicas
-    for i, (y, intent, rep) in enumerate(ROUTES):
-        anim = f'dur="{CYCLE}s" begin="{i * third:.2f}s" repeatCount="indefinite"'
-        out.append(f'''<rect x="{REP_X}" y="{y-17}" width="122" height="34" rx="8" fill="{t['box']}" stroke="{t['line']}" stroke-width="1.2"/>
-<rect x="{REP_X}" y="{y-17}" width="122" height="34" rx="8" fill="none" stroke="{t['accent2']}" stroke-width="2" opacity="0">
-  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;0.28;0.31;0.55;1" {anim}/>
-</rect>
-<text x="{REP_X+61}" y="{y+5}" text-anchor="middle" font-family="{MONO}" font-size="13" fill="{t['ink']}">vLLM {rep}</text>
+    # packets: router -> engine, with the branch lit underneath
+    for i, (_, _, e) in enumerate(REQUESTS):
+        o.append(f'''<path d="{branch(e)}" fill="none" stroke="{t['accent']}" stroke-width="2.5" opacity="0" filter="url(#glow)">
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{k(.62)};{k(.70)};{k(.92)};{k(1.15)};1" {anim(i)}/>
+</path>
+<circle r="5" fill="{t['hot']}" opacity="0" filter="url(#glow)">
+  <animateMotion path="{branch(e)}" keyPoints="0;0;1;1" keyTimes="0;{k(.64)};{k(.92)};1" calcMode="linear" {anim(i)}/>
+  <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;{k(.63)};{k(.65)};{k(.92)};{k(.94)};1" {anim(i)}/>
+</circle>
 ''')
-    out.append("</svg>\n")
-    return "".join(out)
+
+    # engine cards with load bars
+    for i, (name, tag, rest) in enumerate(ENGINES):
+        y0 = card_cy(i) - CARD_H // 2
+        req = next(r for r, (_, _, e) in enumerate(REQUESTS) if e == i)
+        a = anim(req)
+        w0, w1 = int(BAR_W * rest), int(BAR_W * min(rest + 0.45, 0.95))
+        o.append(f'''<rect x="{CARD_X0}" y="{y0}" width="{CARD_X1-CARD_X0}" height="{CARD_H}" rx="10" fill="{t['box']}" stroke="{t['line']}" stroke-width="1.2"/>
+<rect x="{CARD_X0}" y="{y0}" width="{CARD_X1-CARD_X0}" height="{CARD_H}" rx="10" fill="none" stroke="{t['hot']}" stroke-width="2" opacity="0">
+  <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;{k(.90)};{k(.96)};{k(1.6)};1" {a}/>
+</rect>
+<text x="{CARD_X0+14}" y="{y0+20}" font-family="{SANS}" font-size="14" font-weight="700" fill="{t['ink']}">{name}</text>
+<text x="{CARD_X0+14}" y="{y0+34}" font-family="{MONO}" font-size="10" fill="{t['muted']}">{tag}</text>
+<circle cx="{CARD_X1-16}" cy="{y0+15}" r="3.5" fill="{t['hot']}">
+  <animate attributeName="opacity" values="1;0.35;1" dur="{1.6 + i * 0.4:.1f}s" repeatCount="indefinite"/>
+</circle>
+<rect x="{CARD_X0+14}" y="{y0+40}" width="{BAR_W}" height="3" rx="1.5" fill="{t['track']}"/>
+<rect x="{CARD_X0+14}" y="{y0+40}" width="{w0}" height="3" rx="1.5" fill="{t['accent']}">
+  <animate attributeName="width" values="{w0};{w0};{w1};{w0};{w0}" keyTimes="0;{k(.92)};{k(1.05)};{k(2.4)};1" {a}/>
+</rect>
+''')
+
+    o.append("</svg>\n")
+    return "".join(o)
 
 
 if __name__ == "__main__":
