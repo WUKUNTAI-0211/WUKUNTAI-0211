@@ -79,7 +79,7 @@ def draw(t: dict) -> str:
     f = 1 / len(REQUESTS)
     k = lambda x: f"{x * f:.4f}"  # noqa: E731  position inside a slot -> keyTime
 
-    o = [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Kun-Tai Wu, LLM inference routing. Prompts enter vLLM Semantic Router and are routed to vLLM, SGLang, TensorRT-LLM or Ollama.">
+    o = [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Kun-Tai Wu, semantic model routing. Prompts enter vLLM Semantic Router and are routed to vLLM, SGLang, TensorRT-LLM or Ollama.">
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
     <stop offset="0" stop-color="{t['bg0']}"/><stop offset="1" stop-color="{t['bg1']}"/>
@@ -106,7 +106,7 @@ def draw(t: dict) -> str:
 <!-- identity -->
 <rect x="52" y="74" width="30" height="3" rx="1.5" fill="{t['accent']}"/>
 <text x="50" y="144" font-family="{SANS}" font-size="52" font-weight="700" fill="{t['ink']}" letter-spacing="-0.5">Kun-Tai Wu</text>
-<text x="52" y="186" font-family="{SANS}" font-size="27" font-weight="600" fill="{t['sub']}">LLM Inference Routing</text>
+<text x="52" y="186" font-family="{SANS}" font-size="27" font-weight="600" fill="{t['sub']}">Semantic Model Routing</text>
 <text x="52" y="226" font-family="{SANS}" font-size="16" fill="{t['muted']}">Maintainer · vLLM Semantic Router</text>
 <text x="52" y="250" font-family="{SANS}" font-size="16" fill="{t['muted']}">Associate Researcher · Delta Electronics</text>
 

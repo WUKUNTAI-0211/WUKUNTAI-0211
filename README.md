@@ -8,7 +8,7 @@
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg"/>
-    <img src="assets/banner-light.svg" alt="Kun-Tai Wu, LLM inference routing. Animated: prompts enter vLLM Semantic Router, which checks keyword, embedding and domain signals and routes each one to vLLM, SGLang, TensorRT-LLM or Ollama." width="100%"/>
+    <img src="assets/banner-light.svg" alt="Kun-Tai Wu, semantic model routing. Animated: prompts enter vLLM Semantic Router, which checks keyword, embedding and domain signals and routes each one to vLLM, SGLang, TensorRT-LLM or Ollama." width="100%"/>
   </picture>
 </div>
 
@@ -22,7 +22,7 @@
 
 <img src="https://img.shields.io/badge/%E2%96%B8%20ABOUT-0b0d1a?style=for-the-badge&labelColor=7c5cf0" alt="About"/>
 
-I work on **LLM inference routing**: deciding which model and which replica should serve each request, and making that decision fast and reliable on real GPUs. I'm a **maintainer of [vLLM Semantic Router](https://github.com/vllm-project/semantic-router)** (since Aug 2026) and an Associate Researcher at **Delta Electronics** in Taiwan. Before LLM systems, I worked on image restoration.
+I work on **semantic model routing**: deciding which model should serve each request, and running the decision models behind that choice fast on real GPUs. I'm a **maintainer of [vLLM Semantic Router](https://github.com/vllm-project/semantic-router)** (since Aug 2026) and an Associate Researcher at **Delta Electronics** in Taiwan. Before LLM systems, I worked on image restoration.
 
 &nbsp;
 
@@ -42,14 +42,20 @@ I work on **LLM inference routing**: deciding which model and which replica shou
 
 <table width="100%">
 <thead><tr>
-  <th width="50%" align="left"><a href="https://github.com/vllm-project/semantic-router">vLLM Semantic Router</a></th>
-  <th width="50%" align="left">Delta Electronics</th>
+  <th width="33%" align="left">Decision models on NVIDIA GB10</th>
+  <th width="33%" align="left">vSR for OpenCode</th>
+  <th width="34%" align="left">Delta Electronics</th>
 </tr></thead>
 <tbody><tr>
   <td valign="top">
-    Load-aware replica selection: comparing <code>load_aware</code> and <code>least_request</code> routing on live vLLM replicas.
+    Making the router's decision models run well on GB10 (arm64): NVFP4 via cuBLAS 12.9, FP8 matmuls, and a fix for long forwards that reserve twice the memory they use.
     <br/><br/>
-    <sub>Tracking issue <a href="https://github.com/vllm-project/semantic-router/issues/6871">#6871</a></sub>
+    <sub>In review: <a href="https://github.com/vllm-project/semantic-router/pull/7152">#7152</a> · <a href="https://github.com/vllm-project/semantic-router/pull/7181">#7181</a> · next: <a href="https://github.com/vllm-project/semantic-router/issues/7275">#7275</a> · <a href="https://github.com/vllm-project/semantic-router/issues/5302">#5302</a></sub>
+  </td>
+  <td valign="top">
+    Bringing vSR, which runs the router's decision model inside the agent harness, to OpenCode as a native plugin: model routing for child sessions, guarded commands, redaction and answer checks.
+    <br/><br/>
+    <sub>In review: <a href="https://github.com/vllm-project/semantic-router/pull/6688">#6688</a> · issue <a href="https://github.com/vllm-project/semantic-router/issues/6687">#6687</a></sub>
   </td>
   <td valign="top">
     Built the company's first internal coding agent (ReAct on LangGraph, RAG memory, permission-gated tools), now used by 500+ engineers. Training a cost-aware routing model on real agent trajectories.
@@ -58,6 +64,8 @@ I work on **LLM inference routing**: deciding which model and which replica shou
   </td>
 </tr></tbody>
 </table>
+
+<sub>Paused: <code>load_aware</code> vs <code>least_request</code> needs two GPUs; single-GB10 results are in <a href="https://github.com/vllm-project/semantic-router/issues/6871">#6871</a>.</sub>
 
 &nbsp;
 
